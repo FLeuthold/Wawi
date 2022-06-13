@@ -1,0 +1,38 @@
+﻿@model IEnumerable<MvcToner.Models.PositionModel>
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@using(Html.BeginForm("Search", "Bestellung", FormMethod.Get))
+{
+    @Html.TextBox("term")/*muss "term" sein!! siehe HomeController.cs, Parameter der SearchArtikel methode!*/
+    <input type="submit" value="search" />
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Optionen</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (ArtikelModel item in ViewBag.Artikel) {
+        <tr>
+            <td> @Html.HiddenFor(modelItem => item.PrimaryKey) </td>
+            <td> @Html.DisplayFor(modelItem => item.Name) </td>
+            <td>
+                 @Html.ActionLink("Add Position", "Create" , "Bestellung", new{art = item})
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

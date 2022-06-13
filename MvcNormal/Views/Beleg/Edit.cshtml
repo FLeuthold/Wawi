@@ -1,0 +1,70 @@
+﻿@using MvcNormal.Models
+@model MvcNormal.Models.BelegModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Bestellung</h4>
+
+<hr />
+
+
+@using(Html.BeginForm("Edit", "Bestellung", FormMethod.Get))
+{
+    <input type="text" name="term" />
+    /*muss "term" sein!! siehe HomeController.cs, Parameter der SearchArtikel methode!*/
+    <input type="submit" value="search" />
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (ArtikelModel item in ViewBag.lstArtikel) {
+        <tr>
+            <td> @Html.DisplayFor(modelItem => item.Name) </td>
+            <td>
+                 @Html.ActionLink("Add Position", "Edit" , "Bestellung", new{pos=item})
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Artikel
+            </th>
+            <th>
+                Menge
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (PositionModel item in ViewBag.Positions) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artikel.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Menge)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Bestellung", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", "Bestellung",new { pos =item })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+

@@ -1,0 +1,35 @@
+﻿@model MvcToner.Models.PositionModel
+
+<h4>PositionModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PrimaryKey" class="control-label" hidden="hidden"></label>
+                <input asp-for="PrimaryKey" class="form-control" hidden="hidden" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Artikel" class="control-label"></label>
+                <input asp-for="Artikel.Name" class="form-control" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Menge" class="control-label"></label>
+                <input asp-for="Menge" class="form-control" />
+                <span asp-validation-for="Menge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
