@@ -56,18 +56,21 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Bestellung.sql" />
-    <Build Include="Adresse.sql" />
-    <Build Include="Artikel.sql" />
-    <Build Include="Position.sql" />
+    <Build Include="Tables\Adresse.sql" />
+    <Build Include="Tables\Artikel.sql" />
+    <Build Include="Tables\Beleg.sql" />
+    <Build Include="BestellView.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MockDB.refactorlog" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MockDB.publish.xml" />
-    <None Include="Script1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\Position.sql" />
   </ItemGroup>
 </Project>

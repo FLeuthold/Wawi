@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MvcNormal.Models.BelegModel>
+﻿@model IEnumerable<MvcNormal.Models.Beleg>
 
 @{
-    ViewData["Title"] = "ListBestellungen";
+    ViewData["Title"] = "Alle Belege";
 }
 
 <h1>Alle Bestellungen</h1>
@@ -32,9 +32,9 @@
                 @Html.DisplayFor(modelItem => item.Adresse.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit","Bestellung", new { id = item.PrimaryKey  }) |
-                @Html.ActionLink("Details", "Details","Bestellung", new { id = item.PrimaryKey }) |
-                @Html.ActionLink("Delete", "Delete","Bestellung", new { id = item.PrimaryKey })
+                
+                @Html.ActionLink("Edit Positions", "List", "Position", new { beleg_id = item.Id }, new {@class="a"}) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
 }

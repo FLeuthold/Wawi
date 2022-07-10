@@ -1,5 +1,0 @@
-﻿CREATE TABLE [dbo].[Artikel]
-(
-	[id] INT NOT NULL PRIMARY KEY IDENTITY, 
-    [name] NVARCHAR(50) NULL
-)

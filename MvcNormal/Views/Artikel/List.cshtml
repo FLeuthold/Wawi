@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MvcNormal.Models.Artikel>
+
+@{
+    ViewBag.Title = "List";
+    int beleg_id = ViewBag.beleg_id;
+}
+
+<h2>List</h2>
+ 
+
+@using (Html.BeginForm("List", "Artikel", new { beleg_id }))
+{
+    if (beleg_id > 0)
+    {
+        <label for="beleg_id">Beleg-ID:</label>
+        <input type="number" id="beleg_id" value=beleg_id disabled="disabled" />
+    }
+
+    <input type="text" name="term" />
+    /*muss "term" sein!! siehe HomeController.cs, Parameter der SearchArtikel methode!*/
+    <input type="submit" value="search" />
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Artikelbezeichnung
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                @if (beleg_id > 0)
+                {
+                    @Html.ActionLink("Create Position", "Create", "Position", new { art_id = item.Id, beleg_id }, new { @class = "a" })
+
+                }
+            </td>
+
+        </tr>
+    }
+
+</table>
