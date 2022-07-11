@@ -9,7 +9,6 @@ namespace MvcNormal.Models
     {
         public int Id { get; set; }
 
-        [Display]
         public string Name { get; set; }
     }
 }

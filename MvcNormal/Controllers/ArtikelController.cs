@@ -1,8 +1,6 @@
 ﻿using MvcNormal.Data;
-using System;
-using System.Collections.Generic;
+using MvcNormal.Models;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MvcNormal.Controllers
@@ -14,9 +12,15 @@ namespace MvcNormal.Controllers
         public ActionResult List(int beleg_id = 0, string term="")
         {
             ViewBag.beleg_id = beleg_id;
-            var resultArtikel = _context.Artikel.Where(a => a.Name.Contains(term)).ToList();
+            var res = SqlDataAccess.LoadData<Artikel, dynamic>(@"
+select * 
+from Artikel 
+where 
+Name is like '%@term%';", new {term} );
+            
+            //var resultArtikel = _context.Artikel.Where(a => a.Name.Contains(term)).ToList();
 
-            return View(resultArtikel);
+            return View(res);
         }
 
         

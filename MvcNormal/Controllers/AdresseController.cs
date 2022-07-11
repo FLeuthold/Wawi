@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+﻿//using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -9,12 +9,13 @@ namespace MvcNormal.Controllers
 {
     public class AdresseController : Controller
     {
-        private MockDB db = new MockDB();
+        //private MockDB db = new MockDB();
 
         // GET: Adresse
         public ActionResult List()
         {
-            return View(db.Adressen.ToList());
+            var addr = SqlDataAccess.LoadData<Adresse>("select * from Adresse;");
+            return View(addr);
         }
 
         // GET: Adresse/Details/5
@@ -24,7 +25,8 @@ namespace MvcNormal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Adresse adresse = db.Adressen.Find(id);
+            var adresse = SqlDataAccess.LoadData<Adresse, dynamic>("select * from Adresse where Id = @id", new { id });
+            
             if (adresse == null)
             {
                 return HttpNotFound();
@@ -47,8 +49,10 @@ namespace MvcNormal.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Adressen.Add(adresse);
-                db.SaveChanges();
+                SqlDataAccess.SaveData<Adresse>(@"
+insert into 
+Adresse (Id, Name)
+values (@Id, @Name);", adresse );
                 return RedirectToAction("List");
             }
 
@@ -62,7 +66,7 @@ namespace MvcNormal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Adresse adresse = db.Adressen.Find(id);
+            var adresse = SqlDataAccess.LoadData<Adresse, dynamic>("select * from Adresse where Id = @id", new { id });
             if (adresse == null)
             {
                 return HttpNotFound();
@@ -79,8 +83,10 @@ namespace MvcNormal.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(adresse).State = EntityState.Modified;
-                db.SaveChanges();
+                SqlDataAccess.SaveData(@"
+update Adresse
+set Name = @Name
+where Id = @Id", adresse);
                 return RedirectToAction("List");
             }
             return View(adresse);
@@ -93,7 +99,7 @@ namespace MvcNormal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Adresse adresse = db.Adressen.Find(id);
+            var adresse = SqlDataAccess.LoadData<Adresse, dynamic>("select * from Adresse where Id = @id", new { id });
             if (adresse == null)
             {
                 return HttpNotFound();
@@ -106,9 +112,8 @@ namespace MvcNormal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Adresse adresse = db.Adressen.Find(id);
-            db.Adressen.Remove(adresse);
-            db.SaveChanges();
+            SqlDataAccess.LoadData<Adresse, int>("delete from Adresse where Id = @id", id);
+            
             return RedirectToAction("List");
         }
 
@@ -116,7 +121,7 @@ namespace MvcNormal.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -1,30 +1,42 @@
 ﻿using MvcNormal.Data;
 using System.Web.Mvc;
-using System.Data.Entity;
+//using System.Data.Entity;
+using System.Linq;
+using MvcNormal.Models;
 
 namespace MvcNormal.Controllers
 {
     public class BelegController : Controller
     {
-        readonly MockDB _context = new MockDB();
-        
-
         public ActionResult List()
         {
-            var overview = _context.Belege.Include(b => b.Adresse);
-            return View(overview);
+            var belege = SqlDataAccess.LoadData<Beleg>("select * from Beleg;");
+            var adresse = SqlDataAccess.LoadData<Adresse>("select * from Adresse;");
+            belege.ForEach(b => b.Adresse = adresse.FirstOrDefault(a => a.Id == b.AdresseId));
+            return View(belege);
+            /*foreach(var b in belege)
+            {
+                b.Adresse = adresse.FirstOrDefault(a => a.Id == b.AdresseId);
+                
+            }*/
+            //var overview = _context.Belege.Include(b => b.Adresse);
+            
         }
 
         public ActionResult Create(int addr_id)
         {
-            _context.Belege.Add(new Models.Beleg()
+
+            var beleg = new Beleg()
             {
                 AdresseId = addr_id,
                 Datum = System.DateTime.Now
-                
-            });
 
-            _context.SaveChanges();
+            };
+            SqlDataAccess.SaveData(@"
+insert into 
+Beleg (AdresseId, Datum) 
+values (@AdresseId, @Datum);", beleg);
+
             return RedirectToAction("List");
         }
     }
