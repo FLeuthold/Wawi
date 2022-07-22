@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web.Mvc;
 namespace MvcNormal.Models
 {
     [Table("Artikel")]
@@ -8,5 +7,23 @@ namespace MvcNormal.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public int Bestand { get; set; } = 0;
+
+        public int Bestellt { get; set; } = 0;
+        public int Reserviert { get; set; } = 0;
+        public int Mindestbestand { get; set; } = 0;
+
+
+        public int Verfuegbar
+        {
+            get { return Bestand - Reserviert; }
+        }
+
+        public int Bestellvorschlag
+        {
+            get { return -Bestand - Bestellt + Mindestbestand + Reserviert; }
+        }
+
     }
 }

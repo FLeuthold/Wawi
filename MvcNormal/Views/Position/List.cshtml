@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<MvcNormal.Models.Position>
 
 @{
-    //int beleg_id = ViewBag.beleg_id;
+    int beleg_id = ViewBag.beleg_id;
+    string adresse = ViewBag.adresse;
     ViewBag.Title = "Positionen";
 }
 
 <h2>List</h2>
 
 <p>
-    @Html.ActionLink("Create Position", "List", "Artikel", new { beleg_id = ViewBag.beleg_id }, new { @class = "a" })
+    @Html.ActionLink("Create Position", "List", "Artikel", new { beleg_id}, new { @class = "a" })
 </p>
 <table class="table">
     <tr>

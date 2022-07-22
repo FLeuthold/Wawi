@@ -7,17 +7,18 @@ namespace MvcNormal.Controllers
 {
     public class ArtikelController : Controller
     {
-        readonly MockDB _context = new MockDB();
         // GET: Artikel
         public ActionResult List(int beleg_id = 0, string term="")
         {
             ViewBag.beleg_id = beleg_id;
+
+            //if(term!=)
+            //string termlike = string.Format("%{0}%", term);
             var res = SqlDataAccess.LoadData<Artikel, dynamic>(@"
 select * 
-from Artikel 
-where 
-Name is like '%@term%';", new {term} );
-            
+from Artikel;", new { } ).Where(a => a.Name.Contains(term));
+
+
             //var resultArtikel = _context.Artikel.Where(a => a.Name.Contains(term)).ToList();
 
             return View(res);

@@ -9,34 +9,30 @@ namespace MvcNormal.Controllers
 {
     public class PositionController : Controller
     {
-        //int beleg_id;
+        
 
-        /*PositionController(int id)
+        public ActionResult List(int beleg_id)
         {
-            beleg_id = id;
-        }*/
-
-        public ActionResult List(int id)
-        {
+            var beleg = SqlDataAccess.LoadData<Beleg, int>("select * from Beleg where BelegId=@beleg_id;", beleg_id).FirstOrDefault();
 
             //var res = _context.Positionen.Where(p => p.BelegId == beleg_id).Include(p => p.Artikel).ToList();
             var artikel = SqlDataAccess.LoadData<Artikel>("select * from Artikel;");
-            var positionen = SqlDataAccess.LoadData<Position, int>("select * from Position where BelegId = @id;", id);
+            var positionen = SqlDataAccess.LoadData<Position, int>("select * from Position where BelegId = @beleg_id;", beleg_id );
 
             positionen.ForEach(p => p.Artikel = artikel.FirstOrDefault(a => a.Id == p.ArtikelId));
 
-            //ViewBag.beleg_id = ViewBag.beleg_id;
+            ViewBag.beleg_id = ViewBag.beleg_id;
             //sind die Artikel auch populated?
-
+            ViewBag.adresse = beleg.Adresse.Name;
             return View(positionen);
         }
 
 
-        public ActionResult Create(int art_id, int id)
+        public ActionResult Create(int art_id, int beleg_id)
         {
             var pos = new Position()
             {
-                BelegId = id,
+                BelegId = beleg_id,
                 ArtikelId = art_id,
                 Menge = 1
             };
@@ -49,7 +45,7 @@ values (@ArtikelId, @BelegId, @Menge);", pos);
             //_context.Positionen.Add(pos);
             //_context.SaveChanges();
 
-            return RedirectToAction("List", new { id });
+            return RedirectToAction("List", new { beleg_id });
 
         }
 
@@ -80,7 +76,7 @@ values (@ArtikelId, @BelegId, @Menge);", pos);
 delete from Position
 where
 Id = @id;", id);
-            return RedirectToAction("List", new {id = beleg_id });
+            return RedirectToAction("List", new {beleg_id = beleg_id });
         }
     }
 }

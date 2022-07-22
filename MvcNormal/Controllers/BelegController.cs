@@ -29,8 +29,10 @@ namespace MvcNormal.Controllers
             var beleg = new Beleg()
             {
                 AdresseId = addr_id,
-                Datum = System.DateTime.Now
-
+                Datum = System.DateTime.Now,
+                ErfUser = HttpContext.User.Identity.Name 
+                // Has to work with InPrivate-Window
+                // Currently, there are rendering issues with InPrivate-Window
             };
             SqlDataAccess.SaveData(@"
 insert into 
